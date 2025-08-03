@@ -39,7 +39,6 @@ const BoardIdPage = async ({
   return (
     <div className="p-4 h-full overflow-x-auto">
       <ListContainer boardId={boardId} data={lists} />
-      Board id Page
     </div>
   );
 };
