@@ -11,11 +11,17 @@ import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = await auth();
+  const { userId, orgId, orgRole } = await auth();
 
   if (!userId || !orgId) {
     return {
       error: "Unauthorized",
+    };
+  }
+
+    if (orgRole !== "org:admin") {
+    return {
+      error: "Only admins can create boards",
     };
   }
 
