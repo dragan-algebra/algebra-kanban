@@ -8,7 +8,7 @@ import { FormPopover } from "@/components/form/form-popover";
 import { User2 } from "lucide-react";
 
 export const BoardList = async () => {
-  const { orgId } = await auth();
+  const { userId, orgId } = await auth();
 
   if (!orgId) {
     return redirect("/select-team");
@@ -16,7 +16,16 @@ export const BoardList = async () => {
 
   const boards = await db.board.findMany({
     where: {
-      orgId,
+      OR: [
+        { orgId: orgId },
+        {
+          members: {
+            some: {
+              id: userId
+            }
+          }
+        }
+      ]
     },
     orderBy: {
       createdAt: "desc",

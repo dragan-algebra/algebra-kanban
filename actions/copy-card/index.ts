@@ -33,6 +33,9 @@ try {
           },
         },
       },
+      include: {
+        labels: true,
+      }
     });
 
     if (!cardToCopy) {
@@ -53,6 +56,11 @@ try {
         description: cardToCopy.description,
         order: newOrder,
         listId: cardToCopy.listId,
+        labels: {
+          connect: cardToCopy.labels.map((label) => ({
+            id: label.id
+          }))
+        }
       },
     });
 

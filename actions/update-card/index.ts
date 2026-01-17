@@ -20,10 +20,16 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { id, boardId, ...values } = data;
+  const { id, boardId, labels, ...values } = data;
   let card;
 
   try {
+    const labelUpdate = labels ? {
+      labels: {
+        set: labels.map((labelId) => ({ id: labelId })),
+      }
+    } : {};
+    
     card = await db.card.update({
       where: {
         id,
@@ -35,7 +41,11 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
       data: {
         ...values,
+        ...labelUpdate,
       },
+      include: {
+        labels: true,
+      }
     });
 
     await createAuditLog({

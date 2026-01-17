@@ -2,15 +2,14 @@ import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
-
 import { BoardNavbar } from "./_components/board-navbar";
 
 export async function generateMetadata({
-  params 
+  params,
 }: {
   params: Promise<{ boardId: string }>;
 }) {
-  const { orgId } = await auth();
+  const { orgId, userId } = await auth();
   const { boardId } = await params;
 
   if (!orgId) {
@@ -19,10 +18,13 @@ export async function generateMetadata({
     };
   }
 
-  const board = await db.board.findUnique({
+  const board = await db.board.findFirst({
     where: {
       id: boardId,
-      orgId,
+      OR: [
+        { orgId },
+        { members: { some: { id: userId } } }
+      ]
     },
   });
 
@@ -31,24 +33,33 @@ export async function generateMetadata({
   };
 }
 
-const BoardIdLayout = async ({ 
-    children, 
-    params,
+const BoardIdLayout = async ({
+  children,
+  params,
 }: {
-    children: React.ReactNode;
-    params: Promise<{ boardId: string }>;
+  children: React.ReactNode;
+  params: Promise<{ boardId: string }>;
 }) => {
-  const { orgId } = await auth();
+  const { orgId, userId } = await auth();
   const { boardId } = await params;
 
-  if (!orgId) {
+  if (!orgId || !userId) {
     redirect("/select-team");
   }
 
-  const board = await db.board.findUnique({
+  const board = await db.board.findFirst({
     where: {
       id: boardId,
-      orgId,
+      OR: [
+        { orgId },
+        {
+          members: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+      ],
     },
   });
 
@@ -66,6 +77,7 @@ const BoardIdLayout = async ({
       <main className="relative pt-28 h-full">{children}</main>
     </div>
   );
+
 };
 
 export default BoardIdLayout;

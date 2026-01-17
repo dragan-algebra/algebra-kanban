@@ -11,61 +11,74 @@ import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-     const { userId, orgId } = await auth();
+  const { userId, orgId } = await auth();
 
-    if (!userId || !orgId) {
-        return {
-            error: "Unauthorized",
-        }
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
     };
+  }
 
-    const { title, image } = data;
+  const { title, image } = data;
 
-    const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
-        image.split("|");
-    
-    if (
-        !imageId ||
-        !imageThumbUrl ||
-        !imageFullUrl ||
-        !imageUserName ||
-        !imageLinkHTML
-        ) {
-        return {
-            error: "Missing fields. Failed to create board.",
-        };
+  const [
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHTML,
+    imageUserName
+  ] = image.split("|");
+
+  if (!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHTML || !imageUserName) {
+    return {
+      error: "Missing fields. Failed to create board."
+    };
+  }
+
+  let board;
+
+  try {
+    // 1. Create the Board
+    board = await db.board.create({
+      data: {
+        title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageFullUrl,
+        imageUserName,
+        imageLinkHTML,
+      }
+    });
+
+    // 2. Create Default Labels for this Board (Green, Yellow, Orange, Red, Purple, Blue)
+    await db.label.createMany({
+        data: [
+            { title: "Done", color: "#4bce97", boardId: board.id },       // Green
+            { title: "Priority", color: "#f5cd47", boardId: board.id },   // Yellow
+            { title: "Warning", color: "#fea362", boardId: board.id },    // Orange
+            { title: "Urgent", color: "#f87168", boardId: board.id },     // Red
+            { title: "Bug", color: "#9f8fef", boardId: board.id },        // Purple
+            { title: "Info", color: "#579dff", boardId: board.id },       // Blue
+        ]
+    });
+
+    // 3. Create Audit Log
+    await createAuditLog({
+      entityTitle: board.title,
+      entityId: board.id,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.CREATE,
+    });
+
+  } catch (error) {
+    return {
+      error: "Failed to create."
     }
+  }
 
-    let board;
-
-    try {
-        board = await db.board.create({
-            data: {
-                title,
-                orgId,
-                imageId,
-                imageThumbUrl,
-                imageFullUrl,
-                imageUserName,
-                imageLinkHTML,
-            }
-        });
-        
-        await createAuditLog({
-            entityTitle: board.title,
-            entityId: board.id,
-            entityType: ENTITY_TYPE.BOARD,
-            action: ACTION.CREATE,
-        });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-        return {
-            error: "Failed to create."
-        }
-    }
-
-    revalidatePath(`/board/${board.id}`);
-    return { data: board }
+  revalidatePath(`/board/${board.id}`);
+  return { data: board };
 };
 
 export const createBoard = createSafeAction(CreateBoard, handler);

@@ -1,6 +1,5 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { ENTITY_TYPE } from "@prisma/client";
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
 export async function GET(
@@ -8,48 +7,40 @@ export async function GET(
   { params }: { params: Promise<{ cardId: string }> }
 ) {
   try {
-    const resolvedParams = await params;
-    const { cardId } = resolvedParams;
     const { userId, orgId } = await auth();
+    const { cardId } = await params;
 
     if (!userId || !orgId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // 1. Fetch the card to get its Board ID
+    // 1. Fetch card to check permissions
     const card = await db.card.findUnique({
       where: { id: cardId },
-      include: {
-        list: {
-          include: { board: { include: { members: true } } }
-        }
-      }
+      include: { list: { include: { board: { include: { members: true } } } } }
     });
 
     if (!card) return new NextResponse("Card not found", { status: 404 });
 
+    // 2. Permission Check
     const board = card.list.board;
-    
-    // 2. Check Permissions
     const hasAccess = board.orgId === orgId || board.members.some(m => m.id === userId);
 
     if (!hasAccess) {
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // 3. Fetch Logs
-    const auditLogs = await db.auditLog.findMany({
+    // 3. Fetch Comments
+    const comments = await db.comment.findMany({
       where: {
-        entityId: cardId,
-        entityType: ENTITY_TYPE.CARD,
+        cardId: cardId,
       },
       orderBy: {
         createdAt: "desc",
       },
-      take: 3,
     });
 
-    return NextResponse.json(auditLogs);
+    return NextResponse.json(comments);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }

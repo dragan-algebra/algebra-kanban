@@ -1,16 +1,16 @@
 "use client";
 
-import { toast } from "sonner";
 import { useRef, useState } from "react";
 import { Layout } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { toast } from "sonner";
 import { CardWithList } from "@/types";
 import { useAction } from "@/hooks/use-action";
 import { updateCard } from "@/actions/update-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormInput } from "@/components/form/form-input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface HeaderProps {
   data: CardWithList;
@@ -25,11 +25,9 @@ export const Header = ({ data }: HeaderProps) => {
       queryClient.invalidateQueries({
         queryKey: ["card", data.id],
       });
-
       queryClient.invalidateQueries({
         queryKey: ["card-logs", data.id],
       });
-
       toast.success(`Renamed to "${data.title}"`);
       setTitle(data.title);
     },
@@ -39,7 +37,6 @@ export const Header = ({ data }: HeaderProps) => {
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [title, setTitle] = useState(data.title);
 
   const onBlur = () => {
@@ -77,6 +74,52 @@ export const Header = ({ data }: HeaderProps) => {
         <p className="text-sm text-muted-foreground">
           in list <span className="underline">{data.list.title}</span>
         </p>
+
+        {/* Members & Labels Section */}
+        <div className="flex items-start gap-x-8 mt-4">
+          
+          {/* Members */}
+          {data.members && data.members.length > 0 && (
+            <div className="flex flex-col gap-y-1">
+              <p className="text-xs font-semibold text-neutral-700">
+                Members
+              </p>
+              <div className="flex -space-x-1.5 overflow-hidden">
+                {data.members.map((member) => (
+                  <Avatar
+                    key={member.id}
+                    className="h-7 w-7 border-2 border-white cursor-pointer hover:opacity-75 transition"
+                  >
+                    <AvatarImage src={member.image || ""} />
+                    <AvatarFallback className="text-[10px]">
+                      {member.name?.[0] || "M"}
+                    </AvatarFallback>
+                  </Avatar>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Labels */}
+          {data.labels && data.labels.length > 0 && (
+            <div className="flex flex-col gap-y-1">
+              <p className="text-xs font-semibold text-neutral-700">
+                Labels
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {data.labels.map((label) => (
+                  <div
+                    key={label.id}
+                    className="text-xs font-medium px-2.5 py-1 rounded-sm text-white"
+                    style={{ backgroundColor: label.color }}
+                  >
+                    {label.title}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
