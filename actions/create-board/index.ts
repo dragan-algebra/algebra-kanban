@@ -48,6 +48,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageFullUrl,
         imageUserName,
         imageLinkHTML,
+        members: {
+          connect: { id: userId }
+        }
       }
     });
 

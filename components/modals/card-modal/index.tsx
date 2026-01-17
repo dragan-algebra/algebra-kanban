@@ -23,6 +23,7 @@ export const CardModal = () => {
     queryKey: ["card", id],
     queryFn: () => fetcher(`/api/cards/${id}`),
     enabled: !!id,
+    refetchInterval: 2000,
   });
 
   const { data: auditLogsData } = useQuery({

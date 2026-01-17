@@ -24,13 +24,24 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let list;
 
   try {
+    const board = await db.board.findUnique({
+      where: {
+        id: boardId,
+        OR: [
+          { orgId },
+          { members: { some: { id: userId } } }
+        ]
+      }
+    });
+
+    if (!board) {
+      return { error: "Unauthorized" };
+    }
+
     list = await db.list.update({
       where: {
         id,
         boardId,
-        board: {
-          orgId,
-        },
       },
       data: {
         title,

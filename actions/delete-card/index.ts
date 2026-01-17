@@ -21,19 +21,30 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { id, boardId } = data;
+
+  const board = await db.board.findUnique({
+    where: {
+      id: boardId,
+      OR: [
+        { orgId },
+        { members: { some: { id: userId } } }
+      ]
+    }
+  });
+
+  if (!board) {
+    return { error: "Unauthorized" };
+  }
+
   let card;
 
 try {
     card = await db.card.delete({
       where: {
         id,
-        list: {
-          board: {
-            orgId,
-          },
+        list: { boardId },
         },
-      },
-    });
+      });
 
     await createAuditLog({
       entityTitle: card.title,

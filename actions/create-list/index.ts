@@ -27,7 +27,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const board = await db.board.findUnique({
       where: {
         id: boardId,
-        orgId,
+        OR: [
+          { orgId },
+          { members: { some: { id: userId } } }
+        ]
       },
     });
 

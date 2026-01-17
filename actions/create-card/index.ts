@@ -21,15 +21,28 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { title, boardId, listId } = data;
+
+  const board = await db.board.findUnique({
+    where: {
+      id: boardId,
+      OR: [
+        { orgId },
+        { members: { some: { id: userId }}}
+      ]
+    }
+  });
+
+  if (!board) {
+    return { error: "Unauthorized"};
+  }
+  
   let card;
 
   try {
     const list = await db.list.findUnique({
       where: {
         id: listId,
-        board: {
-          orgId,
-        },
+        boardId,
       },
     });
 
