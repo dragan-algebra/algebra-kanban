@@ -76,7 +76,7 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           />
           <input hidden id="listId" name="listId" value={listId} readOnly />
           <div className="flex items-center gap-x-1">
-            <FormSubmit>Add card</FormSubmit>
+            <FormSubmit className="bg-[#c40f61] hover:bg-[#e27526]">Add card</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
             </Button>
@@ -89,7 +89,7 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
       <div className="pt-2 px-2">
         <Button
           onClick={enableEditing}
-          className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm"
+          className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm "
           size="sm"
           variant="ghost"
         >

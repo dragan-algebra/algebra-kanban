@@ -83,7 +83,7 @@ export const FormPopover = ({
               errors={fieldErrors}
             />
           </div>
-          <FormSubmit className="w-full">Create</FormSubmit>
+          <FormSubmit className="w-full bg-[#c40f61] hover:bg-[#e27526]">Create</FormSubmit>
         </form>
       </PopoverContent>
     </Popover>

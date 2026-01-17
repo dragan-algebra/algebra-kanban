@@ -99,7 +99,7 @@ export const CommentsAndActivity = ({
                                 errors={fieldErrors}
                             />
                             <div className="mt-2">
-                                <Button size="sm" variant="primary">
+                                <Button size="sm" className="bg-[#c40f61] hover:bg-[#e27526]">
                                     Save
                                 </Button>
                             </div>

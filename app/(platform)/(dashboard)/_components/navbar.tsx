@@ -9,15 +9,15 @@ import { FormPopover } from "@/components/form/form-popover";
 
 export const Navbar = () => {
     return (
-        <nav className="fixed z-50 top-0 px-4 w-full h-14 border-bottom shadow-sm bg-white flex items-center">
+        <nav className="fixed z-50 top-0 px-4 w-full h-14 border-bottom shadow-sm bg-[#141617] flex items-center">
             <MobileSidebar />
             <div className="flex items-center gap-x-4">
                 <div className="hidden md:flex">
                     <Logo />
                 </div>
                 <FormPopover align="start" side="bottom" sideOffset={18}>
-                    <Button variant="primary" size="sm" className="rounded-sm hidden md:block h-auto py-1.5 px-2 ml-4">
-                        Create
+                    <Button size="sm" className="bg-[#c40f61] hover:bg-[#e27526] rounded-sm hidden md:block h-auto py-1.5 px-2 ml-4">
+                        Create Board
                     </Button>
                 </FormPopover>
                 <FormPopover>
@@ -27,7 +27,7 @@ export const Navbar = () => {
                 </FormPopover>
             </div>
             <div className="ml-auto flex items-center gap-x-2">
-                <OrganizationSwitcher 
+                {/* <OrganizationSwitcher 
                     // hidePersonal
                     afterSelectOrganizationUrl="/team/:id"
                     afterCreateOrganizationUrl="/team/:id"
@@ -38,10 +38,20 @@ export const Navbar = () => {
                                 display: "flex ",
                                 justifyContent: "center",
                                 alignItems: "center",
+                            },
+                            organizationSwitcherTrigger: {
+                                color: "white",
+                                "&:hover": {
+                                color: "#e27526",
+                                backgroundColor: "transparent",
+                                }
+                            },
+                            organizationSwitcherTriggerIcon: {
+                                color: "white" 
                             }
                         }
                     }}
-                />
+                /> */}
                 <UserButton 
                     appearance={{
                         elements: {
@@ -49,6 +59,10 @@ export const Navbar = () => {
                                 height: 30,
                                 width: 30,
                             }
+                        },
+                        variables: {
+                            colorPrimary: "#c40f61", 
+                            colorText: "#141617",   
                         }
                     }}
                 />

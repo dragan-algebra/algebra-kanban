@@ -11,9 +11,9 @@ export const Logo = () => {
                     src="/logo.svg"
                     alt="Logo"
                     height={30}
-                    width={30}
+                    width={48}
                 />
-                <p className="text-lg text-neutral-700 pb-1">
+                <p className="text-lg text-white font-semibold">
                     KanbanAlgebra
                 </p>
             </div>

@@ -1,41 +1,35 @@
 import Link from "next/link";
-import {  Medal } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const MarketingPage = () => {
-
-    return (
-        <div className="flex items-center justify-center flex-col">
-            <div className={cn(
-                "flex items-center justify-center flex-col",
-                )}>
-                <div className="mb-4 flex items-center border shadow-sm p-4 bg-amber-100 text-amber-700 rounded-full uppercase">
-                    <Medal className="h-6 w-6 mr-2" />
-                    No 1 task management
-                </div>
-                <h1 className="text-3xl md:text-6xl text-center text-neutral-800 mb-6">
-                    Kanban Algebra helps teams move
-                </h1>
-                <div className="text-3xl md:text-6xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white px-4 p-2 rounded-md pb-4 w-fit">
-                    forward.
-                </div>
-            </div>
-            <div className={cn(
-                "text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto",
-                )}>
-                Collaborate, manage projects, and reach new productivity peaks. From high rises to the home office, the way your team works is unique - accomplis it all with Kanban Algebra.
-            </div>
-            <Button className="mt-6" size="lg" asChild>
-                <Link href="/sign-up">
-                    Get Kanban Algebra for free
-                </Link>
-            </Button>
-            <Button className="mt-2" variant="outline" size="sm" asChild>
-                <Link href="/sign-out">Sign out</Link>
-            </Button>
+  return (
+    <div className="flex items-center justify-center flex-col">
+      <div className={cn(
+        "flex items-center justify-center flex-col",
+      )}>
+        <div className="mb-4 flex items-center border shadow-sm p-4 bg-blue-50 text-blue-700 rounded-full uppercase">
+          <GraduationCap className="h-6 w-6 mr-2" />
+          Collaborate & Track Progress
         </div>
-    );
+        <h1 className="text-3xl md:text-6xl bg-linear-to-r from-[#004890] to-[#ea4f3c] text-transparent bg-clip-text font-bold px-4 p-2 rounded-md pb-4 w-fit">
+          Deliver Projects On Time
+        </h1>
+      </div>
+      <div className={cn(
+        "text-sm md:text-xl text-[#141617]-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto",
+      )}>
+        Collaborate with your team, manage assignments, and track progress. 
+        The official platform for Algebra students to deliver projects on time.
+      </div>
+      <Button className="mt-6 bg-[#c40f61] hover:bg-[#e27526]" size="lg" asChild>
+        <Link href="/sign-up">
+          Login with your Algebra email
+        </Link>
+      </Button>
+    </div>
+  );
 };
 
 export default MarketingPage;

@@ -30,13 +30,20 @@ export const BoardMemberInvite = () => {
 
   const onSubmit = () => {
     const boardId = params.boardId as string;
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
     execute({ email, boardId });
   };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="sm" className="ml-2 bg-white text-neutral-800 hover:bg-white/90 border-none shadow-sm">
+        <Button size="sm" className="ml-2 bg-white text-neutral-800 hover:bg-[#e27526] hover:text-white transition-colors border-none shadow-sm">
           <UserPlus className="h-4 w-4 mr-2" />
           Invite
         </Button>
@@ -54,7 +61,7 @@ export const BoardMemberInvite = () => {
           <Button 
             onClick={onSubmit} 
             disabled={isLoading || !email}
-            className="w-full"
+            className="w-full bg-[#c40f61] hover:bg-[#e27526]"
             variant="primary"
           >
             Add Member

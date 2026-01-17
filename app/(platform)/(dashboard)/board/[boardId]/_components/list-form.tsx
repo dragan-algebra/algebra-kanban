@@ -81,7 +81,7 @@ export const ListForm = () => {
           />
           <input hidden value={params.boardId} name="boardId" readOnly />
           <div className="flex items-center gap-x-1">
-            <FormSubmit>Add list</FormSubmit>
+            <FormSubmit className="bg-[#c40f61] hover:bg-[#e27526]">Add list</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
             </Button>
@@ -95,7 +95,7 @@ export const ListForm = () => {
     <ListWrapper>
       <button
         onClick={enableEditing}
-        className="w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm"
+        className="w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm cursor-pointer"
       >
         <Plus className="h-4 w-4 mr-2" />
         Add a list
