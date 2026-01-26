@@ -24,8 +24,11 @@ export async function generateMetadata({
       OR: [
         { orgId },
         { members: { some: { id: userId } } }
-      ]
+      ],
     },
+    include: {
+      members: true
+    }
   });
 
   return {
@@ -60,6 +63,10 @@ const BoardIdLayout = async ({
           },
         },
       ],
+    },
+
+    include: {
+      members: true,
     },
   });
 
