@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { CardLabels } from "./card-labels"; 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CardMembers } from "./card-members";
+import { CardDatePicker } from "./card-date-picker";
 
 interface CardActionsProps {
   data: CardWithList;
@@ -69,6 +70,7 @@ export const CardActions = ({ data }: CardActionsProps) => {
       
       <div className="flex flex-wrap gap-2">
         <CardLabels data={data} />
+        <CardDatePicker data={data} />
 
         <Popover>
           <PopoverTrigger asChild>
