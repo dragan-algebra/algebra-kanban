@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { useOrganizationList } from '@clerk/nextjs';
 
 export type Team = {
   id: string;
@@ -35,6 +36,8 @@ export const NavItem = ({
   const router = useRouter();
   const pathname = usePathname();
 
+  const { setActive } = useOrganizationList();
+
   const routes = [
     {
       label: "Boards",
@@ -54,13 +57,24 @@ export const NavItem = ({
   ];
 
   const onClick = (href: string) => {
+    if (setActive) {
+      setActive({ organization: team.id });
+    }
+
     router.push(href);
   };
+
+  const onAccordionClick = () => {
+    onExpand(team.id);
+    if (setActive) {
+      setActive({ organization: team.id});
+    }
+  }
 
   return (
     <AccordionItem value={team.id} className="border-none">
       <AccordionTrigger
-        onClick={() => onExpand(team.id)}
+        onClick={onAccordionClick}
         className={cn(
           "flex items-center gap-x-2 p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline",
           isActive && !isExpanded && "bg-sky-500/10 text-sky-700"

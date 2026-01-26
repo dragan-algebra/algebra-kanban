@@ -20,7 +20,7 @@ export const Sidebar = ({
   const { organization: activeTeam, isLoaded: isLoadedTeam } = useOrganization();
   const { userMemberships, isLoaded: isLoadedTeamList } = useOrganizationList({
     userMemberships: {
-      infinite: true,
+      infinite: false,
     },
 });
 
