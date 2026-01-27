@@ -24,7 +24,7 @@ const MarketingPage = () => {
         The official platform for Algebra students to deliver projects on time.
       </div>
       <Button className="mt-6 bg-[#c40f61] hover:bg-[#e27526]" size="lg" asChild>
-        <Link href="/sign-up">
+        <Link href="/sign-in">
           Login with your Algebra email
         </Link>
       </Button>

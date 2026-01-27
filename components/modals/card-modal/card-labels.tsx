@@ -75,9 +75,9 @@ export const CardLabels = ({ data }: CardLabelsProps) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="secondary"
-          size="sm"
-          className="h-8 px-3"
+          variant="gray" 
+          size="inline"
+          className="w-auto gap-2 justify-start h-8 px-3"
         >
           <Tag className="h-4 w-4 mr-2" />
           Labels
