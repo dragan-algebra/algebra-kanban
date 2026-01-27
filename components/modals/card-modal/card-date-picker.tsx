@@ -65,12 +65,12 @@ export const CardDatePicker = ({ data }: CardDatePickerProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant={date ? "default" : "secondary"}
-          size="sm"
-          className="h-8 px-3"
-        >
+   <Button
+  type="button"
+  variant={date ? "default" : "gray"} 
+  size="inline" 
+  className="w-auto gap-2 justify-start h-8 px-3"
+>
           <Calendar className="h-4 w-4 mr-2" />
           {date ? format(date, "MMM dd, yyyy") : "Dates"}
         </Button>
